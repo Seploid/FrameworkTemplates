@@ -9,12 +9,12 @@ public class LoginSteps extends AbstractSteps {
     public int secondDigit;
     public int result;
 
-    @Given("first digit is (.*)")
+    @Given("first digit is {int}")
     public void firstDigitIs(int firstDigit) {
         this.firstDigit = firstDigit;
     }
 
-    @Given("second digit is (.*)")
+    @Given("second digit is {int}")
     public void secondDigitIs(int secondDigit) {
         this.secondDigit = secondDigit;
     }
@@ -24,7 +24,7 @@ public class LoginSteps extends AbstractSteps {
         this.result = this.firstDigit + this.secondDigit;
     }
 
-    @Given("result is (.*)")
+    @Given("result is {int}")
     public void resultIs(int result) {
         assert this.result == result;
     }
