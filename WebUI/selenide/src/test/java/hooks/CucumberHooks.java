@@ -14,7 +14,6 @@ public class CucumberHooks {
 
     @Before
     public void setup(Scenario scenario) {
-        open("/");
     }
 
     @After
