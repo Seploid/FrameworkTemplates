@@ -9,6 +9,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- important properties -->
+        <run.classes>**/CucumberIntegrationTests.class</run.classes>
+        <junit.parallel>methods</junit.parallel>
+        <junit.parallelThreadCount>1</junit.parallelThreadCount>
+
+
+        <!-- versions of dependencies -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring.version>LATEST</spring.version>
@@ -63,8 +70,57 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <!-- Enable this profile via -Pparallel to enable a parallel run of Cucumber-JVM -->
+        <profile>
+            <id>parallel</id>
+            <properties>
+                <junit.threadCount>4</junit.threadCount>
+                <junit.parallel>classes</junit.parallel>
+                <run.classes>**/*ParallelIT.class</run.classes>
+            </properties>
+        </profile>
+        <!--BROWSERS-->
+        <profile>
+            <id>chrome</id>
+            <properties>
+                <webdriver.browser>chrome</webdriver.browser>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>firefox</id>
+            <properties>
+                <webdriver.browser>firefox</webdriver.browser>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <threadCount>${junit.parallelThreadCount}</threadCount>
+                    <parallel>${junit.parallel}</parallel>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <includes>
+                        <include>${run.classes}</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
