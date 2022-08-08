@@ -12,7 +12,7 @@
         <!-- important properties -->
         <run.classes>**/CucumberIntegrationTests.class</run.classes>
         <junit.parallel>methods</junit.parallel>
-        <junit.parallelThreadCount>1</junit.parallelThreadCount>
+        <junit.parallelThreadCount>4</junit.parallelThreadCount>
 
 
         <!-- versions of dependencies -->
@@ -21,6 +21,7 @@
         <spring.version>LATEST</spring.version>
         <cucumber.version>7.4.1</cucumber.version>
         <junit.version>1.9.0</junit.version>
+        <apache.maven.plugins.version>2.22.2</apache.maven.plugins.version>
     </properties>
 
     <dependencies>
@@ -103,10 +104,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>${apache.maven.plugins.version}</version>
                 <configuration>
                     <threadCount>${junit.parallelThreadCount}</threadCount>
                     <parallel>${junit.parallel}</parallel>
+                    <forkCount>1</forkCount>
+                    <reuseForks>false</reuseForks>
+                    <perCoreThreadCount>true</perCoreThreadCount>
                     <testFailureIgnore>false</testFailureIgnore>
                     <includes>
                         <include>${run.classes}</include>
@@ -114,6 +118,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
